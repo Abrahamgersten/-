@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קישור ווטסאפ מותאם אישית</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            background: url('your-image-url.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            color: #fff;
+        }
+        header {
+            background-color: rgba(0, 128, 0, 0.8);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 1.1em;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #388e3c;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #4caf50;
+        }
+        .copy-btn {
+            margin-top: 10px;
+            background-color: #4caf50;
+        }
+        .copy-btn:hover {
+            background-color: #388e3c;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 128, 0, 0.8);
+            color: white;
+            margin-top: 40px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>מייצר קישורי ווטסאפ מותאמים אישית</h1>
+    </header>
+
+    <main>
+        <p>הזינו את מספר הטלפון שלכם, וקבלו קישור מוכן לשליחה! לאחר מכן, העלו אותו ביחד עם הפלייר שקיבלתם לסטטוס שלכם בווצאפ</p>
+
+        <form id="linkForm">
+            <label for="phone">הכניסו כאן את מספר הטלפון שלכם:</label>
+            <input type="text" id="phone" name="phone" required placeholder="לדוגמה: 0521234567">
+
+            <button type="submit">צור קישור</button>
+        </form>
+
+        <p id="result"></p>
+        <button id="copyButton" class="copy-btn" style="display:none;">העתק קישור</button>
+    </main>
+
+    <footer>
+        <p> ❤️</p>
+    </footer>
+
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userPhone = document.getElementById('phone').value;
+            const israelPrefix = '972';
+            const fullPhone = israelPrefix + userPhone.replace(/^0/, '');
+            const message = encodeURIComponent(`שלום וברכה! הגעתי דרך ${userPhone}, אשמח לקבל את הספר 'לשחרר ולצמוח'. תודה ☺️`);
+            const yourPhone = '0524783509'; 
+            const waLink = `https://wa.me/${yourPhone}?text=${message}`;
+
+            const tinyUrlApi = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(waLink)}`;
+
+            fetch(tinyUrlApi)
+            .then(response => response.text())
+            .then(shortenedUrl => {
+                const resultText = `לקבלת הספר 'לשחרר ולצמוח' כנסו ללינק 👇\n<a href="${shortenedUrl}" target="_blank">${shortenedUrl}</a>`;
+                document.getElementById('result').innerHTML = resultText;
+
+                document.getElementById('copyButton').style.display = 'block';
+
+                document.getElementById('copyButton').onclick = function() {
+                    navigator.clipboard.writeText(`לקבלת הספר 'לשחרר ולצמוח' כנסו ללינק 👇\n${shortenedUrl}`)
+                    .then(() => {
+                        alert('הקישור הועתק בהצלחה!');
+                    })
+                    .catch(err => {
+                        console.error('Error copying to clipboard:', err);
+                        alert('לא ניתן להעתיק את הקישור. נסה שוב.');
+                    });
+                };
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+</body>
+</html>
